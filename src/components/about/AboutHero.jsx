@@ -5,14 +5,16 @@ import { motion } from "framer-motion";
 const AboutHero = () => {
   return (
     <section
-      className="relative h-screen flex flex-col items-center justify-center text-center text-white px-4"
-      style={{
-        backgroundImage: "url('/about-main2.jpg')", // replace with your bg image path
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+  className="relative flex flex-col items-center justify-center text-center text-white px-4"
+  style={{
+    height: "100dvh",
+    backgroundImage: "url('/about-main2.jpg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+
       {/* Overlay for better readability */}
       <div className="absolute inset-0 bg-black/60"></div>
 

@@ -15,6 +15,9 @@ const Navbar = () => {
   // Apply hero style for home and about pages
   const isHeroPage = location.pathname === "/" || location.pathname === "/about";
 
+  // Helper: close menu after link click
+  const handleLinkClick = () => setIsOpen(false);
+
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-colors duration-500 ${
@@ -79,13 +82,14 @@ const Navbar = () => {
         } bg-black/90 text-gray-300 px-4`}
       >
         <div className="py-3 space-y-2">
-          <Link to="/" className="block hover:text-white">Home</Link>
-          <Link to="/services" className="block hover:text-white">Services</Link>
-          <Link to="/about" className="block hover:text-white">About us</Link>
-          <Link to="/contact" className="block hover:text-white">Contact</Link>
+          <Link to="/" className="block hover:text-white" onClick={handleLinkClick}>Home</Link>
+          <Link to="/services" className="block hover:text-white" onClick={handleLinkClick}>Services</Link>
+          <Link to="/about" className="block hover:text-white" onClick={handleLinkClick}>About us</Link>
+          <Link to="/contact" className="block hover:text-white" onClick={handleLinkClick}>Contact</Link>
           <Link
             to="/register"
             className="block bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-full text-center"
+            onClick={handleLinkClick}
           >
             Register now
           </Link>
