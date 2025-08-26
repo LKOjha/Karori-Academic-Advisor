@@ -1,44 +1,64 @@
-import { Link } from 'react-router-dom'
-import Button from '../components/UI/Button'
-import Section from '../components/UI/Section'
+import React, { useEffect, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
+const Hero = () => {
+  const [offsetY, setOffsetY] = useState(0);
 
-export default function Home() {
-    return (
-        <>
-            {/* Hero */}
-            <Section className="pt-24 pb-16 bg-gradient-to-b from-brand-50 to-white">
-                <div className="max-w-3xl text-center mx-auto">
-                    <h1 className="text-3xl sm:text-5xl font-bold tracking-tight">
-                        Clarity after 12th — Choose the right path & college
-                    </h1>
-                    <p className="mt-4 text-lg text-gray-600">
-                        We help students make confident career and college decisions with personalized guidance.
-                    </p>
-                    <div className="mt-8 flex items-center justify-center gap-3">
-                        <Button as={Link} to="/contact">Get Free Consultation</Button>
-                        <Link className="btn btn-outline" to="/services">View Services</Link>
-                    </div>
-                    <p className="mt-6 text-xs text-gray-500">Trusted by students & parents across India</p>
-                </div>
-            </Section>
+  const handleScroll = () => setOffsetY(window.scrollY);
 
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-            {/* Quick features */}
-            <Section>
-                <div className="grid sm:grid-cols-3 gap-6">
-                    {[
-                        { title: 'Career Counselling', desc: 'Stream & course selection based on your strengths.' },
-                        { title: 'College Selection', desc: 'Shortlisting colleges that fit your goals & budget.' },
-                        { title: 'Application Help', desc: 'Forms, documents & timelines — done right.' },
-                    ].map((f) => (
-                        <div key={f.title} className="rounded-2xl border p-6 shadow-sm">
-                            <h3 className="font-semibold">{f.title}</h3>
-                            <p className="text-gray-600 mt-1 text-sm">{f.desc}</p>
-                        </div>
-                    ))}
-                </div>
-            </Section>
-        </>
-    )
-}
+  // Framer Motion scroll-based transforms
+  const { scrollY } = useScroll();
+  const textY = useTransform(scrollY, [0, 300], [0, -120]); // text goes up
+  const opacity = useTransform(scrollY, [0, 250], [1, 0]); // fade out smoothly
+
+  return (
+    <section className="relative h-screen w-full overflow-hidden">
+      {/* Background Video with parallax */}
+      <motion.video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover"
+        style={{ y: offsetY * 0.3 }} // parallax effect
+      >
+        <source src="/hero-bg.mp4" type="video/mp4" />
+      </motion.video>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50"></div>
+
+      {/* Content */}
+      <div className="relative z-10 flex items-center justify-start h-full px-6 md:px-20">
+        <motion.div
+          style={{ y: textY, opacity }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-white max-w-2xl"
+        >
+          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
+            Advice that moves <br /> you forward
+          </h1>
+          <p className="mt-4 text-lg md:text-xl text-gray-200">
+            Your career deserves clarity. We bring it!
+          </p>
+          <motion.button
+            whileHover={{ scale: 1.1, boxShadow: "0px 8px 20px rgba(0,0,0,0.3)" }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-full text-white font-medium transition"
+          >
+            Learn More
+          </motion.button>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
