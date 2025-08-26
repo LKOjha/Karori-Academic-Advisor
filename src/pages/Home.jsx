@@ -17,7 +17,11 @@ const Hero = () => {
   const opacity = useTransform(scrollY, [0, 250], [1, 0]); // fade out smoothly
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section
+      className="relative w-full overflow-hidden"
+      style={{ height: "100dvh" }}
+    >
+
       {/* Background Video with parallax */}
       <motion.video
         autoPlay
@@ -42,7 +46,8 @@ const Hero = () => {
           transition={{ duration: 1, ease: "easeOut" }}
           className="text-white max-w-2xl"
         >
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight">
+
             Advice that moves <br /> you forward
           </h1>
           <p className="mt-4 text-lg md:text-xl text-gray-200">

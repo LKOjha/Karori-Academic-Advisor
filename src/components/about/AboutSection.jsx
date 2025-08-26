@@ -18,17 +18,13 @@ const AboutSection = () => {
                         Your journey, our expertise
                     </h2>
                     <p className="text-lg text-gray-700 leading-relaxed text-justify">
-                        Karori Academic Advisor is a trusted career mentorship platform that helps ambitious students
-                        and working professionals shape their future through the right academic choices.
+                        Karori Academic Advisor is a trusted career mentorship platform dedicated to helping ambitious students and working professionals shape their future through the right academic choices.
                     </p>
                     <p className="text-lg text-gray-700 leading-relaxed text-justify">
-                        We specialize in guiding students toward India’s top postgraduate programs in management,
-                        business, and leadership, helping them make informed decisions, build strong profiles,
-                        and confidently crack college admissions.
+                        We specialize in guiding learners toward India’s top graduation and post-graduation programs in management, business, and leadership — empowering them to make informed decisions, build strong profiles, and achieve their career goals with confidence.
                     </p>
                     <p className="text-lg text-gray-700 leading-relaxed text-justify">
-                        At Karori, we don’t just guide; we walk the journey with you. Whether you're confused about your next step or aiming for a competitive B-school, we ensure you get clarity, direction, and results.
-                        Let’s build your future smartly, strategically, and confidently.          </p>
+                        At Karori, we don’t just guide — we walk the journey with you. Whether you're exploring the right path after school, planning your higher studies, or aiming for a competitive program, we ensure you gain clarity, direction, and results.         </p>
                 </div>
 
                 {/* Right Image */}
