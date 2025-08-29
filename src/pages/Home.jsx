@@ -5,6 +5,8 @@ import About from "./About";
 import Services from "../components/services/Services";
 import WhyChooseUs from "../components/home/WhyChooseUs";
 import NumbersSection from "../components/home/NumbersSection";
+import Testimonials from "../components/home/Testimonials";
+import ContactSection from "../components/contact/ContactSection";
 
 
 export default function Home() {
@@ -20,8 +22,13 @@ export default function Home() {
       <div className="border-t-2 border-black my-12 w-full"></div>
 
       <WhyChooseUs />
+      <div className="border-t-2 border-black my-12 w-full"></div>
+      
+      <Testimonials />
       
       <NumbersSection />
+
+      <ContactSection/>
       
 
     </main>
