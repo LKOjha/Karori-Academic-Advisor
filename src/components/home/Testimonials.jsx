@@ -50,13 +50,13 @@ const testimonials = [
         feedback:
             "Choosing the right MBA college felt overwhelming until I connected with Shivangi ma’am from Karori Academic Advisor. She guided me through every step, from shortlisting colleges to SOP writing and interview preparation. Thanks to her support, I got admitted to Narayana Business School, and today I’m proud to be working as a Deputy Manager at HDFC Bank. Her mentorship played a key role in shaping my career. If you're unsure about your next academic move, I highly recommend reaching out to Karori Academic Advisor — it was the best",
     },
-    // {
-    //     name: "Rahul Verma",
-    //     role: "Medical Aspirant",
-    //     image: "https://randomuser.me/api/portraits/men/76.jpg",
-    //     feedback:
-    //         "The personalized advice and resources they provided were invaluable. I now feel more confident about my future career.",
-    // },
+    {
+        name: "Aditya Tyagi",
+        role: "Godrej Properties",
+        image: "/t3.jpg",
+        feedback:
+            "PGDM admission ke time par main apne career ko lekar bahut confused aur demotivated tha. Tab Shivangi ma’am ne mujhe guide kiya, sahi options dikhaye aur ek reputed college me admission dilwaya. Unke support ki wajah se maine apni journey dobara shuru ki aur aaj main Godrej Properties, Noida me kaam kar raha hoon. Jo confidence aur direction mujhe mila, wo Shivangi ma’am ki guidance ke bina possible nahi tha",
+    },
 ];
 
 const Testimonials = () => {

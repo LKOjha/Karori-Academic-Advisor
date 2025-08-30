@@ -1,11 +1,13 @@
 import { div } from "framer-motion/client";
 import React from "react";
-import ContactPart from "../components/contact/ContactPart";
+import ContactSection from "../components/contact/ContactSection";
 
 const Contact = () => {
     return (
-        
-        <ContactPart/>
+        <div className="py-6">
+        <ContactSection/>
+
+        </div>
         
     );
 };

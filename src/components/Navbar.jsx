@@ -20,35 +20,36 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-colors duration-500 ${
-        isHeroPage
+      className={`fixed top-0 left-0 w-full z-50 transition-colors duration-500 ${isHeroPage
           ? scrolled
             ? "bg-black/80 backdrop-blur-md" // Scrolled state
             : "bg-black/40 backdrop-blur-md" // Transparent at top
           : "bg-black/90 backdrop-blur-md" // Solid dark for other pages
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="flex justify-between items-center h-16">
           {/* Logo + Title */}
-          
-          <div className="flex items-center space-x-2">
-            
-            <img
-              src="/logo.jpg"
-              alt="Karori Logo"
-              className="h-8 w-8 sm:h-10 sm:w-10 mr-2"
-            />
-            
-            <div className="ml-8 sm:ml-12">
-              <h1 className="text-white text-xs sm:text-base tracking-widest sm:tracking-[0.2em]">
-                KARORI ACADEMIC ADVISOR
-              </h1>
-              <p className="text-gray-300 text-[5px] sm:text-[10px] tracking-widest sm:tracking-[0.3em]">
-                Your Journey, Our Expertise
-              </p>
+
+          <a href="/">
+            <div className="flex items-center space-x-2">
+
+              <img
+                src="/logo.jpg"
+                alt="Karori Logo"
+                className="h-8 w-8 sm:h-10 sm:w-10 mr-2"
+              />
+
+              <div className="ml-8 sm:ml-12">
+                <h1 className="text-white text-xs sm:text-base tracking-widest sm:tracking-[0.2em]">
+                  KARORI ACADEMIC ADVISOR
+                </h1>
+                <p className="text-gray-300 text-[5px] sm:text-[10px] tracking-widest sm:tracking-[0.3em]">
+                  Your Journey, Our Expertise
+                </p>
+              </div>
             </div>
-          </div>
+          </a>
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-6 tracking-widest">
@@ -80,9 +81,8 @@ const Navbar = () => {
 
       {/* Mobile Dropdown */}
       <div
-        className={`lg:hidden overflow-hidden transition-all duration-1000 ease-in-out ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        } bg-black/90 text-gray-300 px-4`}
+        className={`lg:hidden overflow-hidden transition-all duration-1000 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          } bg-black/90 text-gray-300 px-4`}
       >
         <div className="py-3 space-y-2">
           <Link to="/" className="block hover:text-white" onClick={handleLinkClick}>Home</Link>
