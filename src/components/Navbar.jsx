@@ -31,12 +31,15 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="flex justify-between items-center h-16">
           {/* Logo + Title */}
+          
           <div className="flex items-center space-x-2">
+            
             <img
               src="/logo.jpg"
               alt="Karori Logo"
               className="h-8 w-8 sm:h-10 sm:w-10 mr-2"
             />
+            
             <div className="ml-8 sm:ml-12">
               <h1 className="text-white text-xs sm:text-base tracking-widest sm:tracking-[0.2em]">
                 KARORI ACADEMIC ADVISOR

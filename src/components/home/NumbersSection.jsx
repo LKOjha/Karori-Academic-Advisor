@@ -39,10 +39,10 @@ const NumbersSection = () => {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/about-main2.jpg')" }}
+        style={{ backgroundImage: "url('/Graph.jpg')" }}
       />
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/70" />
+      <div className="absolute inset-0 bg-black/30" />
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-6">

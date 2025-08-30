@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
-import contactImg from "/logo.jpg"; // replace with your image
+import contactImg from "/contact.jpg"; // replace with your image
 
 const ContactSection = () => {
   const form = useRef();
@@ -11,10 +11,10 @@ const ContactSection = () => {
 
     emailjs
       .sendForm(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
+        "service_1r0m7bd",
+        "template_4z8h6ie",
         form.current,
-        "YOUR_PUBLIC_KEY"
+        "ERJaUoiGczV87-InV"
       )
       .then(
         () => {
@@ -31,7 +31,7 @@ const ContactSection = () => {
   return (
     <section id="contact" className="py-16 bg-gray-50">
       <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-10">
-        
+
         {/* Left Image with animation */}
         <motion.div
           className="flex-1 flex justify-center"
@@ -74,8 +74,11 @@ const ContactSection = () => {
                 type="tel"
                 name="user_phone"
                 required
+                pattern="[6-9][0-9]{9}"
+                title="Enter a valid 10-digit phone number"
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
               />
+
             </div>
 
             <div>
@@ -84,8 +87,10 @@ const ContactSection = () => {
                 type="email"
                 name="user_email"
                 required
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
               />
+
             </div>
 
             <div>
