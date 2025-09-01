@@ -7,6 +7,7 @@ import WhyChooseUs from "../components/home/WhyChooseUs";
 import NumbersSection from "../components/home/NumbersSection";
 import Testimonials from "../components/home/Testimonials";
 import ContactSection from "../components/contact/ContactSection";
+import WhatsAppButton from "../components/home/WhatsAppButton";
 
 
 export default function Home() {
@@ -29,7 +30,9 @@ export default function Home() {
       <NumbersSection />
 
       <ContactSection/>
+      <WhatsAppButton/>
       
+
 
     </main>
   );
