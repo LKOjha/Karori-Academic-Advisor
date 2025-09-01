@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 
+html { scroll-behavior: smooth; }
+body { @apply transition-colors duration-300; }
+
 @layer base {
     :root {
         --brand: #2563eb;

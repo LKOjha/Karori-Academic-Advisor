@@ -1,50 +1,61 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { FaMoon, FaSun } from "react-icons/fa"; // 👈 icons
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState("light"); // 👈 theme state
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
+
+    // 👇 Load theme from localStorage
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+    document.documentElement.classList.toggle("dark", savedTheme === "dark");
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Apply hero style for home and about pages
-  const isHeroPage = location.pathname === "/" || location.pathname === "/about";
+  // 👇 Toggle handler
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+  };
 
-  // Helper: close menu after link click
+  const isHeroPage = location.pathname === "/" || location.pathname === "/about";
   const handleLinkClick = () => setIsOpen(false);
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-colors duration-500 ${isHeroPage
+      className={`fixed top-0 left-0 w-full z-50 transition-colors duration-500  
+        ${isHeroPage
           ? scrolled
-            ? "bg-black/80 backdrop-blur-md" // Scrolled state
-            : "bg-black/40 backdrop-blur-md" // Transparent at top
-          : "bg-black/90 backdrop-blur-md" // Solid dark for other pages
+            ? "bg-black/80 backdrop-blur-md"
+            : "bg-black/40 backdrop-blur-md"
+          : "bg-black/90 backdrop-blur-md"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="flex justify-between items-center h-16">
           {/* Logo + Title */}
-
           <a href="/">
             <div className="flex items-center space-x-2">
-
               <img
                 src="/logo.jpg"
                 alt="Karori Logo"
                 className="h-8 w-8 sm:h-10 sm:w-10 mr-2"
               />
-
               <div className="ml-8 sm:ml-12">
-                <h1 className="text-white text-xs sm:text-base tracking-widest sm:tracking-[0.2em]">
+                <h1 className="text-white dark:text-gray-200 text-xs sm:text-base tracking-widest sm:tracking-[0.2em]">
                   KARORI ACADEMIC ADVISOR
                 </h1>
-                <p className="text-gray-300 text-[5px] sm:text-[10px] tracking-widest sm:tracking-[0.3em]">
+                <p className="text-gray-300 dark:text-gray-400 text-[5px] sm:text-[10px] tracking-widest sm:tracking-[0.3em]">
                   Your Journey, Our Expertise
                 </p>
               </div>
@@ -53,12 +64,21 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center space-x-6 tracking-widest">
-            <div className="flex space-x-8 text-gray-200 font-light mr-16">
+            <div className="flex space-x-8 text-gray-200 font-light mr-6">
               <Link to="/" className="hover:text-white">Home</Link>
               <Link to="/services" className="hover:text-white">Services</Link>
               <Link to="/about" className="hover:text-white">About us</Link>
               <Link to="/contact" className="hover:text-white">Contact</Link>
             </div>
+
+            {/* 👇 Dark mode toggle button */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 text-white mr-6 transition"
+            >
+              {theme === "light" ? <FaMoon /> : <FaSun />}
+            </button>
+
             <Link
               to="/register"
               className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full text-sm hover:opacity-90"
@@ -68,7 +88,15 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Button */}
-          <div className="lg:hidden">
+          <div className="lg:hidden flex items-center space-x-3">
+            {/* 👇 Dark mode toggle for mobile */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 text-white transition"
+            >
+              {theme === "light" ? <FaMoon /> : <FaSun />}
+            </button>
+
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-200 hover:text-white focus:outline-none"
@@ -81,8 +109,9 @@ const Navbar = () => {
 
       {/* Mobile Dropdown */}
       <div
-        className={`lg:hidden overflow-hidden transition-all duration-1000 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          } bg-black/90 text-gray-300 px-4`}
+        className={`lg:hidden overflow-hidden transition-all duration-1000 ease-in-out 
+          ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"} 
+          bg-black/90 text-gray-300 px-4`}
       >
         <div className="py-3 space-y-2">
           <Link to="/" className="block hover:text-white" onClick={handleLinkClick}>Home</Link>

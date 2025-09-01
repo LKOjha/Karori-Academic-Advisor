@@ -12,5 +12,13 @@
     <body>
         <div id="root"></div>
         <script type="module" src="/src/main.jsx"></script>
+        <!-- index.html -->
+        <script>
+            const saved = localStorage.getItem("theme");
+            const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const enableDark = saved ? saved === "dark" : systemPrefersDark;
+            if (enableDark) document.documentElement.classList.add("dark");
+        </script>
+
     </body>
 </html>
