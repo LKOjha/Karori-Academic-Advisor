@@ -28,7 +28,8 @@ const Navbar = () => {
     document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
 
-  const isHeroPage = location.pathname === "/" || location.pathname === "/about";
+  // Updated to include "/services" in the hero pages
+  const isHeroPage = location.pathname === "/" || location.pathname === "/about" || location.pathname === "/services";
   const handleLinkClick = () => setIsOpen(false);
 
   return (
