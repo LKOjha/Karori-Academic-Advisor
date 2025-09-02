@@ -7,7 +7,7 @@ const ServicesHero = () => {
       className="relative flex flex-col items-center justify-center text-center text-white px-4"
       style={{
         height: "100dvh", // fills viewport
-        backgroundImage: "url('/about-main2.jpg')", // change this image path as needed
+        backgroundImage: "url('/serviceshero.jpg')", // change this image path as needed
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

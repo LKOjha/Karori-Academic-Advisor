@@ -68,7 +68,9 @@ const Footer = () => {
                 karoriacademicadvisor@gmail.com
               </a>
             </li>
+            
             <li className="flex items-center gap-2">
+              
               <Phone className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               <div className="flex flex-col">
                 <a href="tel:+917240820997" className="hover:text-blue-600 dark:hover:text-blue-400">
@@ -79,6 +81,7 @@ const Footer = () => {
                 </a>
               </div>
             </li>
+            
             <li className="flex items-start gap-2">
               <MapPin className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-1" />
               <a
@@ -90,7 +93,7 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-
+ 
         {/* 4th Section - Newsletter & Social */}
         <div>
           <h3 className="text-lg font-semibold text-blue-700 dark:text-blue-400 mb-3">

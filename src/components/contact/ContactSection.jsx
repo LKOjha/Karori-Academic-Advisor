@@ -31,9 +31,9 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+      className="py-16  bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
     >
-      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-10">
+      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-10 ">
         {/* Left Image with animation */}
         <motion.div
           className="flex-1 flex justify-center"
