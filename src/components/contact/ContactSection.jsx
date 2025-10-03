@@ -1,13 +1,68 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
-import contactImg from "/contact.jpg"; // replace with your image
+import contactImg from "/contact.jpg";
 
 const ContactSection = () => {
   const form = useRef();
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
 
+  // Send OTP request
+  const sendOtp = async () => {
+    if (!email) {
+      alert("Please enter your email first.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("OTP sent to your email!");
+        setOtpSent(true);
+      } else {
+        alert("Failed to send OTP");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong!");
+    }
+  };
+
+  // Verify OTP request
+  const verifyOtp = async () => {
+    try {
+      const res = await fetch("/api/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Email verified successfully!");
+        setOtpVerified(true);
+      } else {
+        alert("Invalid OTP. Try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong!");
+    }
+  };
+
+  // Send final form only after verification
   const sendEmail = (e) => {
     e.preventDefault();
+    if (!otpVerified) {
+      alert("Please verify your email first.");
+      return;
+    }
 
     emailjs
       .sendForm(
@@ -20,6 +75,9 @@ const ContactSection = () => {
         () => {
           alert("Message sent successfully!");
           form.current.reset();
+          setOtpSent(false);
+          setOtpVerified(false);
+          setOtp("");
         },
         (error) => {
           alert("Failed to send message, try again later.");
@@ -31,10 +89,10 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className="py-16  bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+      className="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
     >
-      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-10 ">
-        {/* Left Image with animation */}
+      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-10">
+        {/* Left Image */}
         <motion.div
           className="flex-1 flex justify-center"
           initial={{ opacity: 0, x: -50 }}
@@ -48,7 +106,7 @@ const ContactSection = () => {
           />
         </motion.div>
 
-        {/* Right Form with animation */}
+        {/* Right Form */}
         <motion.div
           className="flex-1 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 transition-colors duration-300"
           initial={{ opacity: 0, x: 50 }}
@@ -60,6 +118,7 @@ const ContactSection = () => {
           </h2>
 
           <form ref={form} onSubmit={sendEmail} className="space-y-4">
+            {/* Name */}
             <div>
               <label className="block text-gray-600 dark:text-gray-300 mb-2">
                 Name
@@ -72,6 +131,7 @@ const ContactSection = () => {
               />
             </div>
 
+            {/* Phone */}
             <div>
               <label className="block text-gray-600 dark:text-gray-300 mb-2">
                 Phone
@@ -86,19 +146,54 @@ const ContactSection = () => {
               />
             </div>
 
+            {/* Email + OTP */}
             <div>
               <label className="block text-gray-600 dark:text-gray-300 mb-2">
                 Email
               </label>
-              <input
-                type="email"
-                name="user_email"
-                required
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  name="user_email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                />
+                <button
+                  type="button"
+                  onClick={sendOtp}
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                >
+                  Send OTP
+                </button>
+              </div>
+
+              {otpSent && !otpVerified && (
+                <div className="mt-3 flex gap-2">
+                  <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="Enter OTP"
+                    className="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                  />
+                  <button
+                    type="button"
+                    onClick={verifyOtp}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  >
+                    Verify
+                  </button>
+                </div>
+              )}
+
+              {otpVerified && (
+                <p className="text-green-600 mt-2">✅ Email Verified!</p>
+              )}
             </div>
 
+            {/* Message */}
             <div>
               <label className="block text-gray-600 dark:text-gray-300 mb-2">
                 Message
@@ -111,10 +206,16 @@ const ContactSection = () => {
               />
             </div>
 
+            {/* Submit */}
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+                disabled={!otpVerified}
+                className={`px-6 py-3 rounded-lg shadow-md transition duration-300 ${
+                  otpVerified
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                }`}
               >
                 Send Message
               </button>

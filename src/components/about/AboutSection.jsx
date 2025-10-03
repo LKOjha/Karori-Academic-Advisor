@@ -60,7 +60,7 @@ const AboutSection = () => {
           transition={{ type: "spring", stiffness: 200 }}
         >
           <img
-            src="/about-hero2.jpg"
+            src="/about-hero1.jpg"
             alt="About us"
             className="w-full max-w-sm object-cover rounded-lg shadow-md"
           />

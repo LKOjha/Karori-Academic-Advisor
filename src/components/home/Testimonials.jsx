@@ -38,21 +38,21 @@ const testimonials = [
     role: "Mukund Chamicals",
     image: "/t2.jpg",
     feedback:
-      "I am truly grateful to Karori Academic Advisor for the constant guidance and support. They have been there for me at every step of my career journey, especially in helping me choose the right college and shaping my academic path. Their mentorship gave me the clarity and confidence I needed to move forward. Thanks to their valuable advice and motivation, I am now working with Mukund Chemicals. I owe a large part of my career growth to their encouragement and dedicated support. Karori Academic Advisor is not just a mentor but also a true inspiration for students like me.",
+      "I am truly grateful to Shivangi for the constant guidance and support. She has been there for me at every step of my career journey, especially in helping me choose the right college and shaping my academic path. Her mentorship gave me the clarity and confidence I needed to move forward. Thanks to her valuable advice and motivation, I am now working with Mukund Chemicals. I owe a large part of my career growth to her encouragement and dedicated support. Shivangi is not just a mentor but also a true inspiration for students like me.",
   },
   {
     name: "Lakshya",
     role: "Deputy Manager HDFC Bank",
     image: "/t1.jpg",
     feedback:
-      "Choosing the right MBA college felt overwhelming until I connected with Karori Academic Advisor. They guided me through every step — from shortlisting colleges to SOP writing and interview preparation. With their support, I secured admission to Narayana Business School, and today I’m proud to be working as a Deputy Manager at HDFC Bank. Their mentorship played a key role in shaping my career. If you’re unsure about your next academic move, I highly recommend reaching out to Karori Academic Advisor — it was one of the best decisions I ever made.",
+      "Choosing the right MBA college felt overwhelming until I connected with Shivangi. She guided me through every step — from shortlisting colleges to SOP writing and interview preparation. With her support, I secured admission to Narayana Business School, and today I’m proud to be working as a Deputy Manager at HDFC Bank. Her mentorship played a key role in shaping my career. If you’re unsure about your next academic move, I highly recommend reaching out to Shivangi — it was one of the best decisions I ever made.",
   },
   {
     name: "Aditya Tyagi",
     role: "Godrej Properties",
     image: "/t3.jpg",
     feedback:
-      "PGDM admission ke time par main apne career ko lekar bahut confused aur demotivated tha. Tab Karori Academic Advisor ne mujhe guide kiya, sahi options dikhaye aur ek reputed college me admission dilwaya. Unke support ki wajah se maine apni journey dobara shuru ki aur aaj main Godrej Properties, Noida me kaam kar raha hoon. Jo confidence aur direction mujhe mila, wo Karori Academic Advisor ki guidance ke bina possible nahi tha.",
+      "PGDM admission ke time par main apne career ko lekar bahut confused aur demotivated tha. Tab Shivangi ne mujhe guide kiya, sahi options dikhaye aur ek reputed college me admission dilwaya. Unke support ki wajah se maine apni journey dobara shuru ki aur aaj main Godrej Properties, Noida me kaam kar raha hoon. Jo confidence aur direction mujhe mila, wo Shivangi ki guidance ke bina possible nahi tha.",
   },
 ];
 
