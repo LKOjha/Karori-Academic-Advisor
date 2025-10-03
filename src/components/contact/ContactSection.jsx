@@ -23,7 +23,7 @@ const ContactSection = () => {
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
-      if (data.success) {   // ✅ matches backend now
+      if (data.ok) {   // ✅ matches backend now
         alert("OTP sent to your email!");
         setOtpSent(true);
       } else {
