@@ -23,7 +23,7 @@ const ContactSection = () => {
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
-      if (data.success) {
+      if (data.success) {   // ✅ matches backend now
         alert("OTP sent to your email!");
         setOtpSent(true);
       } else {
@@ -44,7 +44,7 @@ const ContactSection = () => {
         body: JSON.stringify({ email, otp }),
       });
       const data = await res.json();
-      if (data.success) {
+      if (data.success) {   // ✅ consistent with backend
         alert("Email verified successfully!");
         setOtpVerified(true);
       } else {
