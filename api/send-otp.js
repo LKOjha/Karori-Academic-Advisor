@@ -1,11 +1,11 @@
 // api/send-otp.js
-const jwt = require("jsonwebtoken");
-const sgMail = require("@sendgrid/mail");
-const crypto = require("crypto");
+import jwt from "jsonwebtoken";
+import sgMail from "@sendgrid/mail";
+import crypto from "crypto";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   try {
     if (req.method !== "POST") {
       return res
@@ -66,4 +66,4 @@ module.exports = async (req, res) => {
     console.error("❌ send-otp function error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
-};
+}
