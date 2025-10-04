@@ -11,6 +11,7 @@ const ContactSection = () => {
   const [otp, setOtp] = useState("");
   const [token, setToken] = useState("");
   const [submissionMessage, setSubmissionMessage] = useState("");
+  const [otpMessage, setOtpMessage] = useState("");
 
   const sendOtp = async () => {
     const res = await fetch("/api/send-otp", {
@@ -32,14 +33,16 @@ const ContactSection = () => {
       body: JSON.stringify({ token, otp }),
     });
     const data = await res.json();
+
     if (data.ok && data.verified) {
       setOtpVerified(true);
+      setOtpMessage("✅ Email Verified!");
       setSubmissionMessage("");
-      alert("Email verified!");
     } else {
       setOtpVerified(false);
-      alert("Invalid OTP.");
+      setOtpMessage("❌ Invalid OTP. Please try again.");
     }
+
   };
 
   const sendEmail = (e) => {
@@ -174,9 +177,16 @@ const ContactSection = () => {
                 </div>
               )}
 
-              {otpVerified && (
-                <p className="text-green-600 mt-2">✅ Email Verified!</p>
+              {otpMessage && (
+                <p
+                  className={`mt-2 text-center text-sm ${otpVerified ? "text-green-600" : "text-red-500"
+                    }`}
+                >
+                  {otpMessage}
+                </p>
               )}
+
+
             </div>
 
             {/* Message */}
@@ -197,11 +207,10 @@ const ContactSection = () => {
               <button
                 type="submit"
                 disabled={!otpVerified}
-                className={`px-6 py-3 rounded-lg shadow-md transition duration-300 ${
-                  otpVerified
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
-                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
-                }`}
+                className={`px-6 py-3 rounded-lg shadow-md transition duration-300 ${otpVerified
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                  }`}
               >
                 Send Message
               </button>
