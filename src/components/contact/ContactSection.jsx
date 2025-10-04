@@ -9,66 +9,32 @@ const ContactSection = () => {
   const [otpVerified, setOtpVerified] = useState(false);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
-  const [token, setToken] = useState(""); // ✅ store OTP token from backend
+  const [token, setToken] = useState("");
 
-  // Send OTP request
   const sendOtp = async () => {
-    if (!email) {
-      alert("Please enter your email first.");
-      return;
-    }
-    try {
-      const res = await fetch("/api/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await res.json();
-      console.log("📩 OTP Send Response:", data);
-
-      if (data.ok && data.token) {
-        localStorage.setItem("otpToken", data.token); // ✅ save token
-        setToken(data.token);
-        alert("OTP sent to your email!");
-        setOtpSent(true);
-      } else {
-        console.error("❌ OTP Send Failed:", data);
-        alert("Failed to send OTP");
-      }
-    } catch (err) {
-      console.error("❌ Send OTP Error:", err);
-      alert("Something went wrong while sending OTP!");
+    const res = await fetch("/api/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    if (data.ok && data.token) {
+      setToken(data.token); // ✅ store the token
+      setOtpSent(true);
     }
   };
 
-  // Verify OTP request
   const verifyOtp = async () => {
-    try {
-      const storedToken = token || localStorage.getItem("otpToken");
-      if (!storedToken) {
-        alert("OTP token missing. Please resend OTP.");
-        return;
-      }
-
-      const res = await fetch("/api/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: storedToken, otp }),
-      });
-
-      const data = await res.json();
-      console.log("✅ Verify OTP Response:", data);
-
-      if (data.ok && data.verified) {
-        alert("Email verified successfully!");
-        setOtpVerified(true);
-      } else {
-        alert("Invalid OTP. Try again.");
-      }
-    } catch (err) {
-      console.error("❌ Verify OTP Error:", err);
-      alert("Something went wrong while verifying OTP!");
+    const res = await fetch("/api/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, otp }), // ✅ must include token
+    });
+    const data = await res.json();
+    if (data.ok && data.verified) {
+      alert("Email verified!");
+    } else {
+      alert("Invalid OTP.");
     }
   };
 
@@ -228,11 +194,10 @@ const ContactSection = () => {
               <button
                 type="submit"
                 disabled={!otpVerified}
-                className={`px-6 py-3 rounded-lg shadow-md transition duration-300 ${
-                  otpVerified
+                className={`px-6 py-3 rounded-lg shadow-md transition duration-300 ${otpVerified
                     ? "bg-blue-600 text-white hover:bg-blue-700"
                     : "bg-gray-400 text-gray-200 cursor-not-allowed"
-                }`}
+                  }`}
               >
                 Send Message
               </button>
