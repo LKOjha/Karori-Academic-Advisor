@@ -10,6 +10,7 @@ const ContactSection = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [token, setToken] = useState("");
+  const [submissionMessage, setSubmissionMessage] = useState("");
 
   const sendOtp = async () => {
     const res = await fetch("/api/send-otp", {
@@ -19,33 +20,32 @@ const ContactSection = () => {
     });
     const data = await res.json();
     if (data.ok && data.token) {
-      setToken(data.token); // ✅ store the token
+      setToken(data.token);
       setOtpSent(true);
     }
   };
 
   const verifyOtp = async () => {
-  const res = await fetch("/api/verify-otp", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token, otp }),
-  });
-  const data = await res.json();
-  if (data.ok && data.verified) {
-    setOtpVerified(true);    // <--- FIXED
-    alert("Email verified!");
-  } else {
-    setOtpVerified(false);   // <--- FIXED
-    alert("Invalid OTP.");
-  }
-};
+    const res = await fetch("/api/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, otp }),
+    });
+    const data = await res.json();
+    if (data.ok && data.verified) {
+      setOtpVerified(true);
+      setSubmissionMessage("");
+      alert("Email verified!");
+    } else {
+      setOtpVerified(false);
+      alert("Invalid OTP.");
+    }
+  };
 
-
-  // Send final form only after verification
   const sendEmail = (e) => {
     e.preventDefault();
     if (!otpVerified) {
-      alert("Please verify your email first.");
+      setSubmissionMessage("Please verify your email first.");
       return;
     }
 
@@ -58,15 +58,15 @@ const ContactSection = () => {
       )
       .then(
         () => {
-          alert("Message sent successfully!");
+          setSubmissionMessage("Message sent successfully!");
           form.current.reset();
           setOtpSent(false);
           setOtpVerified(false);
           setOtp("");
-          localStorage.removeItem("otpToken");
+          setEmail("");
         },
         (error) => {
-          alert("Failed to send message, try again later.");
+          setSubmissionMessage("Failed to send message, try again later.");
           console.error("❌ EmailJS Error:", error);
         }
       );
@@ -75,9 +75,9 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className="py-16 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+      className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300"
     >
-      <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center gap-10">
         {/* Left Image */}
         <motion.div
           className="flex-1 flex justify-center"
@@ -94,12 +94,12 @@ const ContactSection = () => {
 
         {/* Right Form */}
         <motion.div
-          className="flex-1 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 transition-colors duration-300"
+          className="flex-1 bg-gray-50 dark:bg-gray-800 shadow-2xl rounded-2xl p-8 transition-colors duration-300"
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-6 text-center">
             Get in Touch
           </h2>
 
@@ -137,7 +137,7 @@ const ContactSection = () => {
               <label className="block text-gray-600 dark:text-gray-300 mb-2">
                 Email
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="email"
                   name="user_email"
@@ -149,14 +149,14 @@ const ContactSection = () => {
                 <button
                   type="button"
                   onClick={sendOtp}
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 w-full sm:w-auto"
                 >
                   Send OTP
                 </button>
               </div>
 
               {otpSent && !otpVerified && (
-                <div className="mt-3 flex gap-2">
+                <div className="mt-3 flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     value={otp}
@@ -167,7 +167,7 @@ const ContactSection = () => {
                   <button
                     type="button"
                     onClick={verifyOtp}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-full sm:w-auto"
                   >
                     Verify
                   </button>
@@ -197,13 +197,19 @@ const ContactSection = () => {
               <button
                 type="submit"
                 disabled={!otpVerified}
-                className={`px-6 py-3 rounded-lg shadow-md transition duration-300 ${otpVerified
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-400 text-gray-200 cursor-not-allowed"
-                  }`}
+                className={`px-6 py-3 rounded-lg shadow-md transition duration-300 ${
+                  otpVerified
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                }`}
               >
                 Send Message
               </button>
+              {submissionMessage && (
+                <p className="text-center mt-4 text-green-600 dark:text-green-400">
+                  {submissionMessage}
+                </p>
+              )}
             </div>
           </form>
         </motion.div>
