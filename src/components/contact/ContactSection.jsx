@@ -25,18 +25,21 @@ const ContactSection = () => {
   };
 
   const verifyOtp = async () => {
-    const res = await fetch("/api/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, otp }), // ✅ must include token
-    });
-    const data = await res.json();
-    if (data.ok && data.verified) {
-      alert("Email verified!");
-    } else {
-      alert("Invalid OTP.");
-    }
-  };
+  const res = await fetch("/api/verify-otp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, otp }),
+  });
+  const data = await res.json();
+  if (data.ok && data.verified) {
+    setOtpVerified(true);    // <--- FIXED
+    alert("Email verified!");
+  } else {
+    setOtpVerified(false);   // <--- FIXED
+    alert("Invalid OTP.");
+  }
+};
+
 
   // Send final form only after verification
   const sendEmail = (e) => {
@@ -195,8 +198,8 @@ const ContactSection = () => {
                 type="submit"
                 disabled={!otpVerified}
                 className={`px-6 py-3 rounded-lg shadow-md transition duration-300 ${otpVerified
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
-                    : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-400 text-gray-200 cursor-not-allowed"
                   }`}
               >
                 Send Message
