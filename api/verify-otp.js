@@ -1,64 +1,72 @@
-// api/verify-otp.js
-import jwt from "jsonwebtoken";
-import crypto from "crypto";
+import { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
+import { motion } from "framer-motion";
+import contactImg from "/contact.jpg";
 
-console.log("🚀 verify-otp API file loaded"); // logs when file is loaded by the server
+const ContactSection = () => {
+  const form = useRef();
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [token, setToken] = useState("");  // ✅ store token from backend
 
-export default async function handler(req, res) {
-  console.log("✅ verify-otp handler triggered");
-
-  if (req.method !== "POST") {
-    console.log("❌ Invalid method:", req.method);
-    return res.status(405).json({ error: "Method not allowed, use POST instead." });
-  }
-
-  try {
-    // Parse request body
-    let body = {};
+  // Send OTP
+  const sendOtp = async () => {
+    if (!email) {
+      alert("Please enter your email first.");
+      return;
+    }
     try {
-      body = req.body || {};
-      if (typeof body === "string") body = JSON.parse(body);
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      console.log("📩 sendOtp response:", data);
+      if (data.ok && data.token) {   // ✅ get token
+        setToken(data.token);
+        alert("OTP sent to your email!");
+        setOtpSent(true);
+      } else {
+        alert("Failed to send OTP");
+      }
     } catch (err) {
-      console.error("❌ JSON parse error:", err);
-      return res.status(400).json({ error: "Invalid JSON body" });
+      console.error(err);
+      alert("Something went wrong!");
+    }
+  };
+
+  // Verify OTP
+  const verifyOtp = async () => {
+    if (!otp || !token) {
+      alert("Missing OTP or token");
+      return;
     }
 
-    const { token, otp } = body;
-    console.log("📩 Received data:", { tokenPresent: !!token, otp });
-
-    if (!token || !otp) {
-      console.log("❌ Missing token or otp");
-      return res.status(400).json({ error: "token and otp required" });
-    }
-
-    // Verify the token
-    let payload;
     try {
-      payload = jwt.verify(token, process.env.JWT_SECRET || "jwt-secret");
-      console.log("🔐 Token verified:", payload.email);
-    } catch (jwtErr) {
-      console.error("❌ JWT verification failed:", jwtErr.message);
-      return res.status(400).json({ error: "Invalid or expired token" });
+      const res = await fetch("/api/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, otp }), // ✅ send token + otp
+      });
+      const data = await res.json();
+      console.log("🔍 verifyOtp response:", data);
+
+      if (data.ok && data.verified) {   // ✅ backend returns these keys
+        alert("Email verified successfully!");
+        setOtpVerified(true);
+      } else {
+        alert("Invalid OTP. Try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong!");
     }
+  };
 
-    // Recreate HMAC from user-entered OTP
-    const expectedHmac = crypto
-      .createHmac("sha256", process.env.OTP_SECRET || "otp-secret")
-      .update(otp.toString())
-      .digest("hex");
+  // ... rest of your sendEmail and UI remains same ...
+};
 
-    console.log("🧮 Expected HMAC:", expectedHmac);
-    console.log("🧩 Payload HMAC:", payload.hmac);
-
-    if (expectedHmac !== payload.hmac) {
-      console.log("❌ OTP mismatch");
-      return res.status(400).json({ ok: false, verified: false, message: "Invalid OTP" });
-    }
-
-    console.log("✅ OTP verified successfully for:", payload.email);
-    return res.status(200).json({ ok: true, verified: true, email: payload.email });
-  } catch (err) {
-    console.error("💥 verify-otp unexpected error:", err);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-}
+export default ContactSection;
