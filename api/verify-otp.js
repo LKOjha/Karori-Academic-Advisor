@@ -2,12 +2,18 @@
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
-export default async function handler(req, res) {
-  try {
-    if (req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed, use POST instead." });
-    }
+console.log("🚀 verify-otp API file loaded"); // logs when file is loaded by the server
 
+export default async function handler(req, res) {
+  console.log("✅ verify-otp handler triggered");
+
+  if (req.method !== "POST") {
+    console.log("❌ Invalid method:", req.method);
+    return res.status(405).json({ error: "Method not allowed, use POST instead." });
+  }
+
+  try {
+    // Parse request body
     let body = {};
     try {
       body = req.body || {};
@@ -17,45 +23,42 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Invalid JSON body" });
     }
 
-    const { email, otp, token } = body;
-    console.log("🟡 Incoming verify request:", { email, otp, token: token ? "token_present" : "no_token" });
+    const { token, otp } = body;
+    console.log("📩 Received data:", { tokenPresent: !!token, otp });
 
-    if (!email || !otp || !token) {
-      console.error("❌ Missing fields");
-      return res.status(400).json({ error: "Email, OTP, and token are required" });
+    if (!token || !otp) {
+      console.log("❌ Missing token or otp");
+      return res.status(400).json({ error: "token and otp required" });
     }
 
-    let decoded;
+    // Verify the token
+    let payload;
     try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET || "jwt-secret");
-    } catch (err) {
-      console.error("❌ Invalid or expired token:", err.message);
+      payload = jwt.verify(token, process.env.JWT_SECRET || "jwt-secret");
+      console.log("🔐 Token verified:", payload.email);
+    } catch (jwtErr) {
+      console.error("❌ JWT verification failed:", jwtErr.message);
       return res.status(400).json({ error: "Invalid or expired token" });
     }
 
-    console.log("🟢 Token decoded:", decoded);
-
-    if (decoded.email !== email) {
-      console.error("❌ Email mismatch:", decoded.email, email);
-      return res.status(400).json({ error: "Email mismatch" });
-    }
-
-    const verifyHmac = crypto
+    // Recreate HMAC from user-entered OTP
+    const expectedHmac = crypto
       .createHmac("sha256", process.env.OTP_SECRET || "otp-secret")
-      .update(otp)
+      .update(otp.toString())
       .digest("hex");
 
-    console.log("🔵 Comparing HMACs:", { verifyHmac, decodedHmac: decoded.hmac });
+    console.log("🧮 Expected HMAC:", expectedHmac);
+    console.log("🧩 Payload HMAC:", payload.hmac);
 
-    if (verifyHmac !== decoded.hmac) {
-      console.error("❌ Invalid OTP");
-      return res.status(400).json({ error: "Invalid OTP" });
+    if (expectedHmac !== payload.hmac) {
+      console.log("❌ OTP mismatch");
+      return res.status(400).json({ ok: false, verified: false, message: "Invalid OTP" });
     }
 
-    console.log("✅ OTP verified successfully!");
-    return res.status(200).json({ ok: true, message: "OTP verified successfully!" });
+    console.log("✅ OTP verified successfully for:", payload.email);
+    return res.status(200).json({ ok: true, verified: true, email: payload.email });
   } catch (err) {
-    console.error("❌ verify-otp function error:", err);
+    console.error("💥 verify-otp unexpected error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
